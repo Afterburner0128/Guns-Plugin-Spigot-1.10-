@@ -1,0 +1,6 @@
+name: GunsPlugin
+author: Afterburner0128
+version: 1.0
+main: Com.Vance.GunsPlugin.Main
+commands:
+   guns:
