@@ -163,7 +163,7 @@ public class Damage {
 	}
 	public int getBlockType(){
 		List<String> list = Arrays.asList(blockType.replaceAll(" ", "").split(","));
-		if(list.size() < 2){
+		if(!(list.size() == 2)){
 			Main.getInstance().clogger.sendMessage("§cTHE §bSET BLOCK PARAMITER§c FOR THE §a" + name + " §cIS MISSING A VARIABLE.§9 [Item ID, Item Data]");
 			return 0;
 		}
@@ -171,11 +171,11 @@ public class Damage {
 	}
 	public int getBlockData(){
 		List<String> list = Arrays.asList(blockType.replaceAll(" ", "").split(","));
-		if(list.size() < 2){
+		if(!(list.size() == 2)){
 			Main.getInstance().clogger.sendMessage("§cTHE §bSET BLOCK PARAMITER§c FOR THE §a" + name + " §cIS MISSING A VARIABLE.§9 [Item ID, Item Data]");
 			return 0;
 		}
-		return Integer.parseInt(list.get(2));
+		return Integer.parseInt(list.get(1));
 	}
 	public boolean removeBlock(){
 		List<String> list = Arrays.asList(removeBlocks.replaceAll(" ", "").split(","));
