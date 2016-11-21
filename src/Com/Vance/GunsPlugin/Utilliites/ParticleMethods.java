@@ -10,6 +10,7 @@ import Com.Vance.GunsPlugin.Database.Particles.Particles;
 
 public class ParticleMethods {
 	
+	@SuppressWarnings("deprecation")
 	public static void spawnParticles(Particles p, Location loc){
 		for (int i = 0; i < p.getParticles().size(); i++) {
 			List<String> s = Arrays.asList(p.getParticles().get(i).replaceAll(" ", "").split(","));
