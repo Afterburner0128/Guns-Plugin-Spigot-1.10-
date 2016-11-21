@@ -1,7 +1,5 @@
 package Com.Vance.GunsPlugin.Utilliites;
 
-import java.util.Random;
-
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.DragonFireball;
 import org.bukkit.entity.Egg;
@@ -30,8 +28,8 @@ public class ProjectileMethods {
 		for (int i = 1; i <= projectile.getProjectileAmount(); i++) {			
 			//SETS VELOCITY, AND ACCURACY PARAMITERS
 			Vector vector = p.getLocation().getDirection().multiply(projectile.getVelocity());
-			Random rand = new Random();
-			vector.add(new Vector(rand.nextDouble() - (projectile.projectileSpread()/100),rand.nextDouble() - (projectile.projectileSpread()/100), rand.nextDouble() - (projectile.projectileSpread()/100)));
+			double accuracy = projectile.projectileSpread();
+			vector.add(new Vector(Math.random() * accuracy - accuracy,Math.random() * accuracy - accuracy,Math.random() * accuracy - accuracy));
 			if(projectile.getProjectileType().equals("ARROW")){
 				Arrow arrow = p.launchProjectile(Arrow.class);
 				setParameters(arrow, projectile, p);

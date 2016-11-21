@@ -49,7 +49,7 @@ public class Commands implements CommandExecutor{
 						if(args[1].equalsIgnoreCase(gun.getID())){
 			
 							p.getInventory().addItem(CreateItems.createGun(gun.getID()));
-							p.sendMessage(Config.getConfiguration().getString("Messages.Received Weapon").replaceAll("%GunID%", gun.getID()).replaceAll("%GunName%", gun.getName()));
+							p.sendMessage(Config.getConfiguration().getString("Messages.Received Weapon").replaceAll("%WeaponID%", gun.getID()).replaceAll("%WeaponName%", gun.getName()));
 							if(gun.isHeavy() > 0){
 								p.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 100000, gun.isHeavy()));
 							}

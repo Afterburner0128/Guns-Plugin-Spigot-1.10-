@@ -18,7 +18,7 @@ public class SetBlockMethods {
 			for (int y = -damage.getEffectsRadius(); y <= damage.getEffectsRadius(); y++) {
 				for (int z = -damage.getEffectsRadius(); z <= damage.getEffectsRadius(); z++) {
 					if (loc.distance(loc) <= damage.getEffectsRadius()) {
-						map.put(loc, loc.getBlock());
+						//map.put(loc, loc.getBlock());
 						loc.getBlock().setType(Material.getMaterial(damage.getBlockType()));
 						loc.getBlock().setData((byte) damage.getBlockData());
 						

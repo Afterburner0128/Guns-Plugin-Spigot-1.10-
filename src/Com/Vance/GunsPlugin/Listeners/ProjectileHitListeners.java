@@ -26,6 +26,7 @@ import org.bukkit.scheduler.BukkitTask;
 import Com.Vance.GunsPlugin.Main;
 import Com.Vance.GunsPlugin.Database.Guns.Guns;
 import Com.Vance.GunsPlugin.Utilliites.Colors;
+import Com.Vance.GunsPlugin.Utilliites.SetBlockMethods;
 import Com.Vance.GunsPlugin.WeaponMethods.Runnables.RepeatEffectsRunnable;
 import de.tr7zw.itemnbtapi.NBTItem;
 
@@ -46,14 +47,8 @@ public class ProjectileHitListeners implements Listener{
 				runRepeatEffects(p, gun, e.getEntity());
 				
 				//SETS WEAPON DAMAGE, AND PLAYS THE HIT SOUND
-				e.setDamage(gun.getDamageSet().getDamage());
+				
 				gun.getProjectileSet().playHitSound(p);
-				
-				//GIVE THE PLAYER EXPERIENCE
-				if(gun.getDamageSet().addsExperiance() == true){
-					p.giveExp(gun.getDamageSet().addExperiance());
-				}
-				
 			}
 		}
 	}
@@ -157,6 +152,24 @@ public class ProjectileHitListeners implements Listener{
 	public static void runEffectRadius(Player p,Guns gun, Entity e){
 		//RUNS RADIUS
 		if(gun.getDamageSet().useEffectsRadius() == true){
+			//SETS BLOCK
+			if(gun.getDamageSet().allowSetBlock() == true){
+				SetBlockMethods.setBlocks(gun.getDamageSet(), e.getLocation());
+				if(gun.getDamageSet().removeBlock() == true){
+					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(),  new Runnable(){
+
+						@Override
+						public void run() {
+							if(e instanceof Projectile){
+								SetBlockMethods.removeBlocks(gun.getDamageSet(), e.getLocation());
+							}
+								
+						}
+						
+					}, gun.getDamageSet().removeBlockDelay());
+				}
+			
+			}
 			for(Entity entity : e.getNearbyEntities(gun.getDamageSet().getEffectsRadius(), gun.getDamageSet().getEffectsRadius(), gun.getDamageSet().getEffectsRadius())){
 				if(entity instanceof LivingEntity){
 					if(!(entity  instanceof Player)){
@@ -255,6 +268,13 @@ public class ProjectileHitListeners implements Listener{
 		
 	}
 	public static void returnEffects(Player p,Guns gun, Entity e){
+		if(e instanceof LivingEntity){
+			((LivingEntity) e).damage(gun.getDamageSet().getDamage());
+		}
+		//ADDS EXPERIANCE
+		if(gun.getDamageSet().addsExperiance() == true){
+			p.giveExp(gun.getDamageSet().addExperiance());
+		}
 		//GENERATES EXPLOSION
 		if(gun.getDamageSet().explosive() == true){
 			p.getLocation().getWorld().createExplosion(e.getLocation().getX(), e.getLocation().getY(), e.getLocation().getZ(), gun.getDamageSet().explosionSize(), gun.getDamageSet().incendiary(), gun.getDamageSet().explosionBlockDamage());
@@ -270,7 +290,7 @@ public class ProjectileHitListeners implements Listener{
 					
 				}
 				else{
-					Firework firework = p.getLocation().getWorld().spawn(e.getLocation().clone().add(0,2,0), Firework.class);
+					Firework firework = e.getLocation().getWorld().spawn(e.getLocation().clone().add(0,2,0), Firework.class);
 					FireworkMeta meta = firework.getFireworkMeta();
 					
 					for(String a : gun.getDamageSet().fireworkColors()){
@@ -286,7 +306,7 @@ public class ProjectileHitListeners implements Listener{
 				}
 			}
 			else{
-				Firework firework = p.getLocation().getWorld().spawn(e.getLocation().clone().add(0,2,0), Firework.class);
+				Firework firework = e.getLocation().getWorld().spawn(e.getLocation().clone().add(0,2,0), Firework.class);
 				FireworkMeta meta = firework.getFireworkMeta();
 				
 				for(String a : gun.getDamageSet().fireworkColors()){
