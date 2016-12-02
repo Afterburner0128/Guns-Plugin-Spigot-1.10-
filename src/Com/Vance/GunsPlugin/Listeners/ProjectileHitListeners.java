@@ -154,24 +154,27 @@ public class ProjectileHitListeners implements Listener{
 		if(gun.getDamageSet().useEffectsRadius() == true){
 			//SETS BLOCK
 			if(gun.getDamageSet().allowSetBlock() == true){
-				SetBlockMethods.setBlocks(gun.getDamageSet(), e.getLocation());
-				if(gun.getDamageSet().removeBlock() == true){
-					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(),  new Runnable(){
+				if(gun.getDamageSet().enableRepeatEffects() == false){
+					if(e instanceof Projectile){
+						SetBlockMethods block = new SetBlockMethods(gun.getDamageSet(), e.getLocation());
+						block.setBlocks();
+						if(gun.getDamageSet().removeBlock() == true){
+							Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(),  new Runnable(){
 
-						@Override
-						public void run() {
-							if(e instanceof Projectile){
-								SetBlockMethods.removeBlocks(gun.getDamageSet(), e.getLocation());
-							}
+								@Override
+								public void run() {
+									block.removeBlocks(gun.getDamageSet().getEffectsRadius("X"), gun.getDamageSet().getEffectsRadius("Y"), gun.getDamageSet().getEffectsRadius("Z"));
+										
+								}
 								
+							}, gun.getDamageSet().removeBlockDelay());
 						}
-						
-					}, gun.getDamageSet().removeBlockDelay());
-				}
+					}
+				}	
 			
 			}
-			for(Entity entity : e.getNearbyEntities(gun.getDamageSet().getEffectsRadius(), gun.getDamageSet().getEffectsRadius(), gun.getDamageSet().getEffectsRadius())){
-				if(entity instanceof LivingEntity){
+			for(Entity entity : e.getNearbyEntities(gun.getDamageSet().getEffectsRadius("X"), gun.getDamageSet().getEffectsRadius("Y"), gun.getDamageSet().getEffectsRadius("Z"))){
+				if(entity instanceof LivingEntity || entity instanceof Projectile){
 					if(!(entity  instanceof Player)){
 						returnEffects(p, gun, entity);
 					}
@@ -182,89 +185,6 @@ public class ProjectileHitListeners implements Listener{
 			//RUNS SINGLE LOCATION
 			returnEffects(p, gun, e);
 		}
-		/*//DELAY EFFECTS
-		if(gun.getDamageSet().enableDelayEffects() == true){
-			Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(), new Runnable(){
-
-				@Override
-				public void run() {
-					runEffects(gun, e);
-				}
-				
-			}, gun.getDamageSet().getDelayTimer());
-		}
-		//REPEAT EFFECTS
-		if(gun.getDamageSet().enableRepeatEffects() == true){
-			i = gun.getDamageSet().getRepeatTimer();
-			j = gun.getDamageSet().getRepeatDelay();
-			new BukkitRunnable() {
-				
-				@Override
-				public void run() {
-					if(i == 0){
-						this.cancel();
-					}
-					runEffects(gun, e);
-					i--;
-					
-				}
-				
-			}.runTaskTimer(Main.getInstance(), 0, j);
-		}
-		//RUN EFFECTS RADIUS
-		if(gun.getDamageSet().useEffectsRadius() == true){
-			if(gun.getDamageSet().allowPotionEffects() == true){
-				PotionMethods.addPotionEffects(gun, e);
-			}
-			if(gun.getDamageSet().allowSetBlock() == true){
-				SetBlockMethods.setBlocks(gun.getDamageSet(), e.getLocation().clone().add(0, 2, 0));
-				if(gun.getDamageSet().removeBlock() == true){
-					Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getInstance(),  new Runnable(){
-
-						@Override
-						public void run() {
-							SetBlockMethods.removeBlocks(gun.getDamageSet(), e.getLocation());
-							
-						}
-						
-					}, gun.getDamageSet().removeBlockDelay());
-				}
-			}
-			//LIGHTNING
-			if(gun.getDamageSet().enableLightning() == true){
-				for(Entity en : e.getNearbyEntities(gun.getDamageSet().getEffectsRadius(), gun.getDamageSet().getEffectsRadius(), gun.getDamageSet().getEffectsRadius())){
-					p.getLocation().getWorld().strikeLightning(en.getLocation());
-				}
-				
-			}
-		}
-	}
-	public static void runEffects(Guns gun, Entity p){
-		//RUN EXPLOSION
-		if(gun.getDamageSet().explosive() == true){
-			System.out.println(true);
-			p.getLocation().getWorld().createExplosion(p.getLocation().getX(), p.getLocation().getY(), p.getLocation().getZ(), gun.getDamageSet().explosionSize(), gun.getDamageSet().incendiary(), gun.getDamageSet().explosionBlockDamage());
-		}
-		//LAUNCH FIREWORKS
-		if(gun.getDamageSet().enabledFireworks() == true){
-			Firework firework = p.getLocation().getWorld().spawn(p.getLocation().clone().add(0,2,0), Firework.class);
-			FireworkMeta meta = firework.getFireworkMeta();
-			meta.addEffect(FireworkEffect.builder().flicker(false).trail(false).build());
-			
-			for(String a : gun.getDamageSet().fireworkColors()){
-				meta.addEffect(FireworkEffect.builder().withColor(Colors.getColor(a)).build());
-			}
-			firework.setFireworkMeta(meta);
-			
-			if(gun.getDamageSet().detonateFireworkOnSpawn() == true){
-				firework.detonate();
-			}
-			
-		}
-		//LIGHTNING
-		if(gun.getDamageSet().enableLightning() == true){
-			p.getLocation().getWorld().strikeLightning(p.getLocation());
-		}*/
 		
 	}
 	public static void returnEffects(Player p,Guns gun, Entity e){
@@ -281,15 +201,20 @@ public class ProjectileHitListeners implements Listener{
 		}
 		//LIGHTNING
 		if(gun.getDamageSet().enableLightning() == true){
-			p.getWorld().strikeLightning(e.getLocation());
+			if(e instanceof Projectile){
+				if(gun.getDamageSet().runOnHit() == true){
+					p.getWorld().strikeLightning(e.getLocation());
+				}
+			}
+			else{
+				p.getWorld().strikeLightning(e.getLocation());
+			}	
+			
 		}
 		//FIREWORKS
 		if(gun.getDamageSet().enabledFireworks() == true){
 			if(e instanceof Projectile){
-				if(gun.getDamageSet().fireworkOnHit() == true){
-					
-				}
-				else{
+				if(gun.getDamageSet().runOnHit() == true){
 					Firework firework = e.getLocation().getWorld().spawn(e.getLocation().clone().add(0,2,0), Firework.class);
 					FireworkMeta meta = firework.getFireworkMeta();
 					
@@ -300,7 +225,6 @@ public class ProjectileHitListeners implements Listener{
 						
 					if(gun.getDamageSet().detonateFireworkOnSpawn() == true){
 						firework.detonate();
-						
 					}
 					
 				}

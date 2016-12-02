@@ -24,6 +24,7 @@ import Com.Vance.GunsPlugin.Database.Projectiles.ProjectilesConfiguration;
 import Com.Vance.GunsPlugin.Listeners.PlayerInteractListener;
 import Com.Vance.GunsPlugin.Listeners.PlayerReloadListener;
 import Com.Vance.GunsPlugin.Listeners.ProjectileHitListeners;
+import Com.Vance.GunsPlugin.Utilliites.CraftingUtilities;
 
 public class Main extends JavaPlugin implements Listener{
 	
@@ -49,6 +50,7 @@ public class Main extends JavaPlugin implements Listener{
 		AttachmentsConfiguration.setupConfiguration();
 		CraftingConfiguration.setupConfiguration();
 		Config.setupConfig();
+		CraftingUtilities.addRecpies();
 		
 		getServer().getPluginManager().registerEvents(new PlayerReloadListener(), this);
 		getServer().getPluginManager().registerEvents(new PlayerInteractListener(), this);

@@ -21,6 +21,12 @@ public class WeaponReload {
 			return false;
 		}
 		Guns gun = Main.getInstance().guns.get(nbti.getString("Weapon Type"));
+		if(gun.usePermission() == true){
+			if(!p.hasPermission(gun.getPermission())){
+				p.sendMessage(Config.getConfiguration().getString("Messages.Permissions.Weapon Use"));
+				return false;
+			}
+		}
 		BountifulAPI.sendActionBar(p, Config.getConfiguration().getString("Messages.Reloading Message").replaceAll("%WeaponName%", gun.getName()).replaceAll("%MaxAmmo%", String.valueOf(gun.getCapacity())));
 		nbti.setBoolean("Armed", false);
 		if (p.getInventory().contains(gun.getAmmoItem().getType())) {

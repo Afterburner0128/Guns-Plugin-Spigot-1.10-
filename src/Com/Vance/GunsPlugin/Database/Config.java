@@ -15,6 +15,9 @@ public class Config {
 		FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 		
 		if(!file.exists()){
+			ConfigurationSection permissions = config.createSection("Permissions");
+			permissions.set("Require Command Permissions", true);
+			permissions.set("Command Permission", "guns.commands.use");
 			ConfigurationSection messages = config.createSection("Messages");
 			messages.set("Shoot Message", "§9Ammunition Remaining: §6%AmmoAmount% Rounds");
 			messages.set("Out of Ammo", "§9Ammunition Remaining: §4Out Of Ammo");
@@ -23,6 +26,7 @@ public class Config {
 			messages.set("Reloading Message", "§9Status: §6Reloading...");
 			messages.set("Received Weapon", "§eYou have recieved the [%GunID%, %GunName%]");
 			messages.set("Ammo Item Display", "§e%GunName%§r Ammo «%AmmoAmount%»");
+			messages.set("Permissions.Weapon Use", "§cYou lack the required permissions to use this weapon.");
 		}
 		try {
 			config.save(file);

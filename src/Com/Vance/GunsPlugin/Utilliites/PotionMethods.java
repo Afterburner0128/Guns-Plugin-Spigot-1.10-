@@ -14,8 +14,8 @@ public class PotionMethods {
 
 	public static void addPotionEffects(Guns gun, Entity e) {
 
-		for (Entity en : e.getNearbyEntities(gun.getDamageSet().getEffectsRadius(),
-				gun.getDamageSet().getEffectsRadius(), gun.getDamageSet().getEffectsRadius())) {
+		for (Entity en : e.getNearbyEntities(gun.getDamageSet().getEffectsRadius("X"),
+				gun.getDamageSet().getEffectsRadius("Y"), gun.getDamageSet().getEffectsRadius("Z"))) {
 			LivingEntity living = (LivingEntity) en;
 			for (String potion : gun.getDamageSet().getPotionEffects()) {
 				ArrayList<String> data = (ArrayList<String>) Arrays.asList(potion.replaceAll(" ", "").split(","));

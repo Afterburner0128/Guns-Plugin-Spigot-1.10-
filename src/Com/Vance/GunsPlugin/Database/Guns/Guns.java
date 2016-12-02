@@ -41,11 +41,12 @@ public class Guns {
 	private String hammerSound;
 	private String crafting;
 	private String attachment;
+	private String permission;
 	private boolean drop;
 	
 	public Guns(String name, String ID, String weaponItem, String itemLore, String ammoItem, int ammoCapacity, boolean removeAmmoIndividualy, String projectileSet,
 			int shootDelay, int reloadDelay, String firearmType, String damageSet, String jamming, boolean scope, int zoomLevel, int heavyWeapon, String shootSound,
-			String reloadSound, String hammerSound, boolean rightClicktoShoot, boolean automaticReload, String crafting, String attachment, boolean drop){
+			String reloadSound, String hammerSound, boolean rightClicktoShoot, boolean automaticReload, String crafting, String attachment, boolean drop, String permission){
 		
 		this.name = name;
 		this.attachment = attachment;
@@ -71,6 +72,7 @@ public class Guns {
 		this.hammerSound = hammerSound;
 		this.crafting = crafting;
 		this.drop = drop;
+		this.permission = permission;
 	}
 	public String getName(){
 		return name;
@@ -226,7 +228,18 @@ public class Guns {
 			Main.getInstance().clogger.sendMessage("§cTHE §bHAMMER SOUND  PARAMITER§c FOR THE §a" + name + " §cDOES NOT RECONIZE THE SOUND: §9" + list.get(0));
 		}
 	}
-	public void getGun(){
-		
+	public String getPermission(){
+		List<String> list = Arrays.asList(permission.replaceAll(" ", "").split(","));
+		return list.get(1);
+	}
+	public boolean usePermission(){
+		List<String> list = Arrays.asList(permission.replaceAll(" ", "").split(","));
+		if(list.get(0).equalsIgnoreCase("TRUE")){
+			return true;
+		}
+		if(list.get(0).equalsIgnoreCase("FALSE")){
+			return false;
+		}
+		return false;
 	}
 }

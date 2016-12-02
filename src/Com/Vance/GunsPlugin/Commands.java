@@ -22,6 +22,11 @@ public class Commands implements CommandExecutor{
 			return false;
 		}
 		Player p = (Player) sender;
+		if(Config.getConfiguration().getBoolean("Permissions.Require Command Permissions") == true){
+			if(!p.hasPermission(Config.getConfiguration().getString("Permissions.Command Permission"))){
+				return false;
+			}
+		}
 		if(cmd.getName().equalsIgnoreCase("Guns")){
 			if(sender.hasPermission("gunsplugin.command.guns.use")){
 				if(args.length == 0){

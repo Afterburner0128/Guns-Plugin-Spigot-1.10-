@@ -21,9 +21,9 @@ public class CraftingConfiguration {
 				section.set("Crafting Name", "M1 Garand Crafting");
 				section.set("ID", "M1GarandCrafting");
 				section.set("Item Abbreviations", Arrays.asList("265, 0, I", "5, 0, W", "259, 0, F"));
-				section.set("Item Ammount", 1);
+				section.set("Item Amount", 1);
 				section.set("Crafting Row 1", "  F");
-				section.set("Crafting Row 2", "IWI");
+				section.set("Crafting Row 2", " WI");
 				section.set("Crafting Row 3", "  W");
 				section.set("Enable Recipe", true);
 			}

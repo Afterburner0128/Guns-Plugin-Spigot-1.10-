@@ -21,6 +21,12 @@ public class WeaponShoot {
 			return false;
 		}
 		Guns gun = Main.getInstance().guns.get(nbti.getString("Weapon Type"));
+		if(gun.usePermission() == true){
+			if(!p.hasPermission(gun.getPermission())){
+				p.sendMessage(Config.getConfiguration().getString("Messages.Permissions.Weapon Use"));
+				return false;
+			}
+		}
 		if(nbti.getBoolean("Jammed") == true){
 			BountifulAPI.sendActionBar(p, Config.getConfiguration().getString("Messages.Weapon Jammed").replaceAll("%WeaponName%", gun.getName()));
 			return false;

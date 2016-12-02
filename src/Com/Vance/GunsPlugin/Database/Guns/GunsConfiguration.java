@@ -22,7 +22,7 @@ public class GunsConfiguration {
 				itemParams.set("ID", "M1Garand");
 				itemParams.set("Weapon Item", "292, 1, 1, true");
 				itemParams.set("Weapon Description", "§aStandard Infantry Rifle");
-				
+				itemParams.set("Permission", "false, guns.use.m1garand");
 				ConfigurationSection ammoParams = section.createSection("Ammunition Parameters");
 				ammoParams.set("Ammo Item", "264, 0");
 				ammoParams.set("Ammo Capacity", 8);
@@ -60,7 +60,7 @@ public class GunsConfiguration {
 						weaponParams.getInt("Shoot Delay"), weaponParams.getInt("Reload Delay"), weaponParams.getString("Firearm Type"), weaponParams.getString("Damage Set"),
 						weaponParams.getString("Jamming"), weaponParams.getBoolean("Scope"), weaponParams.getInt("Zoom Level"), weaponParams.getInt("Weight"),
 						soundParams.getString("Shoot Sound"), soundParams.getString("Reload Sound"), soundParams.getString("Hammer Sound"), weaponParams.getBoolean("Right Click to Shoot"),
-						weaponParams.getBoolean("Automatic Reload"), weaponParams.getString("Crafting"), weaponParams.getString("Attachment"), weaponParams.getBoolean("Shift Weapon Drop")));
+						weaponParams.getBoolean("Automatic Reload"), weaponParams.getString("Crafting"), weaponParams.getString("Attachment"), weaponParams.getBoolean("Shift Weapon Drop"), itemParams.getString("Permission")));
 			}
 			config.save(file);
 		} catch (Exception e) {
