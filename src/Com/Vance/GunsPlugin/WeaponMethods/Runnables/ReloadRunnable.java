@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.connorlinfoot.bountifulapi.BountifulAPI;
@@ -25,9 +26,15 @@ public class ReloadRunnable extends BukkitRunnable{
 		this.nbti = nbti;
 		this.slot = slot;
 	}
+	@SuppressWarnings("deprecation")
 	@Override
 	public void run() {
 		Guns gun = Main.getInstance().guns.get(nbti.getString("Weapon Type"));
+		
+		ItemStack is = new ItemStack(gun.getAmmoItem().getType(), nbti.getInteger("Current Amount"), gun.getAmmoItem().getDurability());
+		ItemMeta ismeta = is.getItemMeta();
+		ismeta.spigot().setUnbreakable(gun.getAmmoItem().getItemMeta().spigot().isUnbreakable());
+		is.setItemMeta(ismeta);
 		
 		//CHECKS IF THE PLAYER DOESNT HAVE AMMO
 		if(!p.getInventory().contains(gun.getAmmoItem().getType())){
@@ -39,7 +46,7 @@ public class ReloadRunnable extends BukkitRunnable{
 				}
 				//REMOVE AMMO INDIVIDUALY PARAMITER [FALSE]
 				if(gun.removeAmmoIndividualy() == false){
-					p.getInventory().addItem(CreateItems.createAmmo(nbti, nbti.getInteger("Current Amount"), 1));
+					p.getInventory().addItem(CreateItems.createAmmo(gun, nbti.getInteger("Current Amount"), 1));
 				}	
 				//RESET THE GUN
 				nbti.setInteger("Current Amount", -1);
@@ -66,7 +73,7 @@ public class ReloadRunnable extends BukkitRunnable{
 					}
 					//REMOVE AMMO INDIVIDUALY PARAMITER [FALSE]
 					if(gun.removeAmmoIndividualy() == false){
-						p.getInventory().addItem(CreateItems.createAmmo(nbti, nbti.getInteger("Current Amount"), 1));
+						p.getInventory().addItem(CreateItems.createAmmo(gun, nbti.getInteger("Current Amount"), 1));
 					}	
 					//RESET THE GUN
 					nbti.setInteger("Current Amount", -1);
@@ -91,7 +98,7 @@ public class ReloadRunnable extends BukkitRunnable{
 				if(gun.removeAmmoIndividualy() == false){
 					
 					nbti.setInteger("Current Amount", gun.getCapacity());
-					p.getInventory().removeItem(gun.getAmmoItem());
+					p.getInventory().removeItem(CreateItems.createAmmo(gun, nbti.getInteger("Current Amount"),1));
 				}
 				BountifulAPI.sendActionBar(p, Config.getConfiguration().getString("Messages.Shoot Message").replaceAll("%AmmoAmount%", nbti.getInteger("Current Amount") + "").replaceAll("%WeaponName%", gun.getName()).replaceAll("%MaxAmmo%", String.valueOf(gun.getCapacity())));
 				p.getInventory().setItem(slot, nbti.getItem());
@@ -116,7 +123,7 @@ public class ReloadRunnable extends BukkitRunnable{
 						}
 					}
 					if(gun.removeAmmoIndividualy() == false){
-						p.getInventory().addItem(CreateItems.createAmmo(nbti, nbti.getInteger("Current Amount"), 1));
+						p.getInventory().addItem(CreateItems.createAmmo(gun, nbti.getInteger("Current Amount"), 1));
 					}
 					nbti.setInteger("Current Amount", -1);
 					p.getInventory().setItem(slot, nbti.getItem());
@@ -140,7 +147,7 @@ public class ReloadRunnable extends BukkitRunnable{
 				if(gun.removeAmmoIndividualy() == false){
 					nbti.setInteger("Current Amount", ammonbti.getInteger("Capacity"));
 					p.getInventory().removeItem(ammonbti.getItem());
-					p.getInventory().addItem(CreateItems.createAmmo(nbti, nbti.getInteger("Current Amount"), NBTAmmoCount));	
+					p.getInventory().addItem(CreateItems.createAmmo(gun, nbti.getInteger("Current Amount"), NBTAmmoCount));	
 				}
 					
 				BountifulAPI.sendActionBar(p, Config.getConfiguration().getString("Messages.Shoot Message").replaceAll("%AmmoAmount%", nbti.getInteger("Current Amount") + "").replaceAll("%WeaponName%", gun.getName()).replaceAll("%MaxAmmo%", String.valueOf(gun.getCapacity())));

@@ -4,19 +4,19 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import Com.Vance.GunsPlugin.Database.Guns.Guns;
-import Com.Vance.GunsPlugin.Listeners.ProjectileHitListeners;
+import Com.Vance.GunsPlugin.Database.Damage.Damage;
+import Com.Vance.GunsPlugin.Listeners.DamageEvents.RunEffectRadius;
 
 public class RepeatEffectsRunnable extends BukkitRunnable{
 	
-	private Guns gun;
+	private Damage damage;
 	private int i;
 	private Player p;
 	private Entity e;
 	
-	public RepeatEffectsRunnable(Player p, Guns gun, Entity e) {
-		this.gun = gun;
-		this.i = gun.getDamageSet().getRepeatTimer();
+	public RepeatEffectsRunnable(Player p, Damage damage, Entity e) {
+		this.damage = damage;
+		this.i = damage.getRepeatTimer();
 		this.e = e;
 		this.p = p;
 	}
@@ -27,7 +27,7 @@ public class RepeatEffectsRunnable extends BukkitRunnable{
 			this.cancel();
 		}
 		else{
-			ProjectileHitListeners.runEffectRadius(p, gun, e);
+			RunEffectRadius.runEffectRadius(p, damage, e);
 		}
 		i --;
 		

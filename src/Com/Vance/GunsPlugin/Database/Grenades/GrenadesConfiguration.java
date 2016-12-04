@@ -34,8 +34,8 @@ public class GrenadesConfiguration {
 			}
 			for(String str : config.getKeys(false)){
 				ConfigurationSection section = config.getConfigurationSection(str);
-				ConfigurationSection itemParams = section.createSection("Item Parameters");
-				ConfigurationSection weaponParams = section.createSection("Weapon Operation");
+				ConfigurationSection itemParams = section.getConfigurationSection("Item Parameters");
+				ConfigurationSection weaponParams = section.getConfigurationSection("Weapon Operation");
 				
 				Main.getInstance().grenades.put(itemParams.getString("ID"),new Grenades(itemParams.getString("Name"), itemParams.getString("ID"), itemParams.getString("Item"), itemParams.getString("Description"), weaponParams.getInt("Throwing Velocity"),
 						weaponParams.getInt("Detonation Timer"), weaponParams.getString("Damage Set"), weaponParams.getString("Throwing Particles"), weaponParams.getBoolean("Remove Item After Detonation"), weaponParams.getBoolean("Can Pickup")));

@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 import Com.Vance.GunsPlugin.Main;
 import Com.Vance.GunsPlugin.Database.Guns.Guns;
+import Com.Vance.GunsPlugin.WeaponMethods.GrenadeMethods;
 import Com.Vance.GunsPlugin.WeaponMethods.WeaponShoot;
 import de.tr7zw.itemnbtapi.NBTItem;
 
@@ -17,9 +18,8 @@ public class PlayerInteractListener implements Listener{
 	@EventHandler
 	public void on(PlayerInteractEvent e){
 		Player p = e.getPlayer();
-		@SuppressWarnings("deprecation")
-		ItemStack item = p.getItemInHand();
-		
+		ItemStack item = e.getItem();
+		//NULL CHECKS
 		if (item == null) {
 			return;
 		}
@@ -27,25 +27,24 @@ public class PlayerInteractListener implements Listener{
 			return;
 		}
 		NBTItem nbti = new NBTItem(item);
-		Guns gun = Main.getInstance().guns.get(nbti.getString("Weapon Type"));
-		if(nbti.getBoolean("Weapon") == true){
+		if(nbti.getBoolean("Weapon") == false){
+			return;
+		}
+		//INSTANCEOF GUN
+		if(nbti.getBoolean("Gun") == true){
+			Guns gun = Main.getInstance().guns.get(nbti.getString("Weapon Type"));
 			if(gun.rightClickToShoot() == true){
 				if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 					try {
-						if(nbti.getBoolean("Gun") == true){
-							WeaponShoot.shootWeapon(p, nbti);
-						}
-						if(nbti.getBoolean("Grenade") == true){
-							
-						}
+						WeaponShoot.shootWeapon(p, nbti);
 					} catch (Exception e2) {
 						e2.printStackTrace();
 					}
 				}
 				if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 					try {
-						//ZOOM GUN
-						//ENABLE ATTACHMENT
+						//TODO ZOOM GUN
+						//TODO ENABLE ATTACHMENT
 					} catch (Exception e2) {
 						
 					}
@@ -54,27 +53,32 @@ public class PlayerInteractListener implements Listener{
 			if(gun.rightClickToShoot() == false){
 				if (e.getAction().equals(Action.LEFT_CLICK_AIR) || e.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
 					try {
-						if(nbti.getBoolean("Gun") == true){
-							WeaponShoot.shootWeapon(p, nbti);
-						}
-						if(nbti.getBoolean("Grenade") == true){
-							
-						}
+						WeaponShoot.shootWeapon(p, nbti);
 					} catch (Exception e2) {
 						e2.printStackTrace();
 					}
 				}
 				if (e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 					try {
-						//ZOOM GUN
-						//ENABLE ATTACHMENT
+						//TODO ZOOM GUN
+						//TODO ENABLE ATTACHMENT
 					} catch (Exception e2) {
-						
+							
 					}
 				}
 			}
+		}
+		//INSTANCEOF GRENADE
+		if(nbti.getBoolean("Grenade") == true){
+			//Grenades grenade = Main.getInstance().grenades.get(nbti.getString("Weapon Type"));
+			try {
+				GrenadeMethods.throwGrenade(p, nbti);
+			} catch (Exception e2) {
+				
+			}
 			
 		}
+
 	}
 
 }

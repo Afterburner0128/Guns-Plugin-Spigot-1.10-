@@ -53,17 +53,18 @@ public class CreateItems {
 		return null;
 	}
 
-	public static ItemStack createAmmo(NBTItem gun, int weaponAmmo, int amount){
+	@SuppressWarnings("deprecation")
+	public static ItemStack createAmmo(Guns gun, int weaponAmmo, int amount){
 		if(amount <= 0){
 			return new ItemStack(Material.AIR);
 		}
-		Guns weapon = Main.getInstance().guns.get(gun.getString("Weapon Type"));
+	
 		
-		ItemStack ammo = new ItemStack(weapon.getAmmoItem().getType(),amount ,weapon.getAmmoItem().getDurability());
-		System.out.println(ammo.getAmount());
+		ItemStack ammo = new ItemStack(gun.getAmmoItem().getType(),amount ,gun.getAmmoItem().getDurability());
 		
 		ItemMeta ammoMeta = ammo.getItemMeta();
-		ammoMeta.setDisplayName(Config.getConfiguration().getString("Messages.Ammo Item Display").replaceAll("%GunName%", gun.getItem().getItemMeta().getDisplayName()).replaceAll("%AmmoAmount%", String.valueOf(weaponAmmo)));
+		ammoMeta.setDisplayName(Config.getConfiguration().getString("Messages.Ammo Item Display").replaceAll("%GunName%", gun.getWeaponItem().getItemMeta().getDisplayName()).replaceAll("%AmmoAmount%", String.valueOf(weaponAmmo)));
+		ammoMeta.spigot().setUnbreakable(gun.getAmmoItem().getItemMeta().spigot().isUnbreakable());
 		ammo.setItemMeta(ammoMeta);
 		
 		NBTItem nbti = new NBTItem(ammo);

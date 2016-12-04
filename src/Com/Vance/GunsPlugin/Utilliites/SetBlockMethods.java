@@ -8,9 +8,6 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.Sound;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import Com.Vance.GunsPlugin.Main;
 import Com.Vance.GunsPlugin.Database.Damage.Damage;

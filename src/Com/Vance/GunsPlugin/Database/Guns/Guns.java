@@ -113,12 +113,15 @@ public class Guns {
 	public ItemStack getAmmoItem(){
 		List<String> list = Arrays.asList(ammoItem.replaceAll(" ", "").split(","));
 		
-		if(list.size() != 2){
+		if(list.size() != 3){
 			Main.getInstance().clogger.sendMessage("§cTHE §bAMMO ITEM  PARAMITER§c FOR THE §a" + name + " §cIS MISSING A VARIABLE.§9 [Item ID, Durability]");
 			return null;
 		}
 		
 		ItemStack is = new ItemStack(Material.getMaterial(Integer.parseInt(list.get(0))), 1, Short.parseShort(list.get(1)));
+		ItemMeta ismeta = is.getItemMeta();
+		ismeta.spigot().setUnbreakable(Boolean.parseBoolean(list.get(2)));
+		is.setItemMeta(ismeta);
 		return is;
 		
 	}

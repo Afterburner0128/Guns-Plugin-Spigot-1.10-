@@ -24,7 +24,7 @@ public class Config {
 			messages.set("Empty Weapon", "§9Ammunition Remaining: §6Weapon Empty");
 			messages.set("Weapon Jammed", "§9Weapon Status: §4Weapon Jammed");
 			messages.set("Reloading Message", "§9Status: §6Reloading...");
-			messages.set("Received Weapon", "§eYou have recieved the [%GunID%, %GunName%]");
+			messages.set("Received Weapon", "§eYou have recieved the %GunID%, %GunName%");
 			messages.set("Ammo Item Display", "§e%GunName%§r Ammo «%AmmoAmount%»");
 			messages.set("Permissions.Weapon Use", "§cYou lack the required permissions to use this weapon.");
 		}

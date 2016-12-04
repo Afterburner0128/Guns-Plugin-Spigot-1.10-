@@ -24,7 +24,7 @@ public class GunsConfiguration {
 				itemParams.set("Weapon Description", "§aStandard Infantry Rifle");
 				itemParams.set("Permission", "false, guns.use.m1garand");
 				ConfigurationSection ammoParams = section.createSection("Ammunition Parameters");
-				ammoParams.set("Ammo Item", "264, 0");
+				ammoParams.set("Ammo Item", "264, 0, true");
 				ammoParams.set("Ammo Capacity", 8);
 				ammoParams.set("Remove Ammo Individually", true);
 				ammoParams.set("Projectile Set", "M1GarandBullet");
